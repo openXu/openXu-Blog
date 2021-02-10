@@ -46,7 +46,7 @@
 # 
 &emsp;&emsp;上面说到`MeasureSpec`约束是由父控件传递给子控件的，这个类里面到底封装了什么东西？我们看一看源码：
 
-```Java
+```java
 public static class MeasureSpec {
     private static final int MODE_SHIFT = 30;
     private static final int MODE_MASK = 0x3 << MODE_SHIFT;
@@ -108,7 +108,7 @@ public static class MeasureSpec {
 
 &emsp;&emsp;通过上面的介绍，我们知道，如果要自定义`ViewGroup`就必须重写`onMeasure()`方法，在这里测量子控件的尺寸。子控件的尺寸怎么测量呢？ViewGroup中提供了三个关于测量子控件的方法：
 
-```Java
+```java
  /**
   *遍历ViewGroup中所有的子控件，调用measuireChild测量宽高
   */
@@ -244,7 +244,7 @@ protected void measureChildWithMargins (View child,
   
 &emsp;&emsp;View中onMeasure方法已经默认为我们的控件测量了宽高，我们看看它做了什么工作：
 
-```Java
+```java
 protected void onMeasure( int widthMeasureSpec, int heightMeasureSpec) {
     setMeasuredDimension( getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),
             getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));

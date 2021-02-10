@@ -38,7 +38,7 @@
 
 创建一个类MyTextView继承`View`，发现报错，因为要覆盖他的构造方法（因为View中没有参数为空的构造方法），`View`有四种形式的构造方法，其中四个参数的构造方法是API 21才出现，所以一般我们只需要重写其他三个构造方法即可。它们的参数不一样分别对应不同的创建方式，比如只有一个`Context`参数的构造方法通常是通过代码初始化控件时使用；而两个参数的构造方法通常对应布局文件中控件被映射成对象时调用（需要解析属性）；通常我们让这两个构造方法最终调用三个参数的构造方法，然后在第三个构造方法中进行一些初始化操作。
 
-```Java
+```java
 public class MyView extends View {
     /**
      * 需要绘制的文字
@@ -165,7 +165,7 @@ public class MyView extends View {
 </br>
 在构造方法中获取自定义属性的值：
 
-```Java
+```java
 public MyTextView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     //获取自定义属性的值
@@ -219,7 +219,7 @@ public MyTextView(Context context, AttributeSet attrs, int defStyleAttr) {
 在学习onMasure方法之前，我们要先了解他的参数中的一个类`MeasureSpec`，知己知彼才能百战百胜 。跟踪一下源码，发现它是View中的一个静态内部类，是由尺寸和模式组合而成的一个值，用来描述父控件对子控件尺寸的约束，看看他的部分源码，一共有三种模式，然后提供了合成和分解的方法：
 
 
-```Java
+```java
 /**
  * measurespec封装了父控件对他的孩子的布局要求。
  * 一个measurespec由大小和模式。有三种可能的模式：
@@ -264,7 +264,7 @@ public static class MeasureSpec {
 
 这样说起来还是有点抽象，举一个小栗子大家就知道这三种约束到底是什么意思。我们自定义一个View，为了方便起见，让它继承Button，布局文件中设置不同的宽高条件，然后在onMeasure方法中打印一下他的参数（int widthMeasureSpec, int heightMeasureSpec）到底是个什么鬼
 
-```Java
+```java
 /**
  * Created by openXu on 16/5/19.
  */
@@ -325,7 +325,7 @@ public class MyView extends Button {
 
 **情形2，让按钮填充父窗体:**
 
-```Java
+```java
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -392,7 +392,7 @@ public class MyView extends Button {
 
 通过上面对`MeasureSpec`的了解，我们现在就有能看懂`View`的`onMeasure()`方法默认是怎样为控件测量大小的了。看看View中onMeasure的源码：
 
-```Java
+```java
 protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),
             getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));
@@ -421,7 +421,7 @@ public static int getDefaultSize(int size, int measureSpec) {
 
 我们先忽略掉**UNSPECIFIED** 的情况（使用极少），只考虑**AT_MOST** 和**EXACTLY** ，现在的问题是设置wrap_content 时，控件却使用了match_parent  的效果，看下面怎么重写`onMeasure()`（注释比较详细，不做过多讲解）：
 
-```Java
+```java
 @Override
 protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -505,7 +505,7 @@ protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
 需要注意的是，`onMeasure()`方法不只调用一次，所以在分段文本是需要判断，不要重复分段，否则会报错。代码如下（仅供参考）：
 
-```Java
+```java
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;

@@ -20,7 +20,7 @@
 
 我们先自定义一个`ViewGroup`作为布局容器，实现一个从左往右水平排列（排满换行）的效果：
 
-```Java
+```java
 /**
  * 自定义布局管理器的示例。
  */
@@ -235,7 +235,7 @@ left就代表是左上（按常理默认就是左上方开始，就不用写left
 
 覆盖构造方法，然后在有AttributeSet参数的构造方法中初始化参数值，这个构造方法才是布局文件被映射为对象的时候被调用的。
 
-```Java
+```java
 public static class CustomLayoutParams extends MarginLayoutParams {
        public static final int POSITION_MIDDLE = 0; // 中间
        public static final int POSITION_LEFT = 1; // 左上方
@@ -270,7 +270,7 @@ public static class CustomLayoutParams extends MarginLayoutParams {
 
 在`ViewGroup`中有下面几个关于`LayoutParams`的方法，`generateLayoutParams (AttributeSet attrs) `是在布局文件被填充为对象的时候调用的，这个方法是下面几个方法中最重要的，如果不重写它，我么布局文件中设置的布局参数都不能拿到。后面我也会专门写一篇博客来介绍布局文件被添加到activity窗口的过程，里面会讲到这个方法被调用的来龙去脉。其他几个方法我们最好也能重写一下，将里面的`LayoutParams`换成我们自定义的` CustomLayoutParams `类，避免以后会遇到布局参数类型转换异常。
 
-```Java
+```java
 @Override
 public LayoutParams generateLayoutParams(AttributeSet attrs) {
     return new CustomLayoutParams(getContext(), attrs);
@@ -360,7 +360,7 @@ protected boolean checkLayoutParams(ViewGroup.LayoutParams p) {
 
 经过上面几步之后，我们运行程序，就能获取子控件的布局参数了，在`onMeasure()`方法和`onLayout()`方法中，我们按照自定义布局容器的特殊需求，对宽度和位置坐特殊处理。这里我们需要注意一下，如果布局容器被设置为包裹类容，我们只需要保证能将最大的子控件包裹住就ok，代码注释比较详细，就不多说了。
 
-```Java
+```java
  @Override
 protected void onMeasure( int widthMeasureSpec, int heightMeasureSpec) { 
   //获得此ViewGroup上级容器为其推荐的宽和高，以及计算模式  
@@ -532,7 +532,7 @@ protected void onLayout( boolean changed, int left, int top, int right,
 
 **onMeasure()和onLayout()：**
 
-```Java
+```java
 protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) { 
    // 获得此ViewGroup上级容器为其推荐的宽和高，以及计算模式   
   int widthMode = MeasureSpec. getMode(widthMeasureSpec); 
